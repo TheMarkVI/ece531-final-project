@@ -1,0 +1,27 @@
+BUILDROOT_HOME=/home/art/ece531/buildroot/buildroot-2025.05
+
+CC=$(BUILDROOT_HOME)/output/host/usr/bin/arm-linux-gcc
+CCFLAGS=--sysroot=$(BUILDROOT_HOME)/output/staging
+INCLUDES=
+LFLAGS=
+
+LIBS= 
+# -uClibc -lc
+
+SRC=thermo.c
+OBJ=
+MAIN=thermo
+
+RM=rm -rf
+
+.c.o:
+	$(CC) $(CCFLAGS) $(INCLUDES) -c $< -o $@
+
+$(MAIN): $(SRC)
+	$(CC) $(CCFLAGS) $(INCLUDES) -o $(MAIN) $(SRC) $(LFLAGS) $(LIBS)
+
+all: $(MAIN)
+
+clean:
+	$(RM) $(MAIN) *.o *~
+
