@@ -5,10 +5,10 @@ INCLUDES=
 LFLAGS=-L/usr/lib/x86_64-linux-gnu
 LIBS= -lcurl -lpthread
 
-SRC=thermo.c
+SRC=thermofinal.c
 # OBJ=$(SRC:.c=.o)
 OBJ=$(SRC)
-MAIN=thermo
+MAIN=thermoclient
 
 RM=rm -rf
 

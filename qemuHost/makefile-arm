@@ -8,9 +8,9 @@ LFLAGS=
 LIBS= -lcurl -lpthread
 # -uClibc -lc
 
-SRC=thermo.c
+SRC=thermofinal.c
 OBJ=
-MAIN=thermo
+MAIN=thermoclient
 
 RM=rm -rf
 

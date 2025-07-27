@@ -5,9 +5,9 @@
 # Acknowledgement:
 #   - Google Gemini was used to assist with guidance and suggestions for implementation.
 
-# To run this server:
-# - Make sure MongoDB is running on your EC2 instance.
-# - Run from your terminal on EC2: python3 thermostat_server.py
+# Server Requirements:
+# - MongoDB running on instance.
+# - To run through terminal on EC2: python3 thermo_serv.py
 
 from flask import Flask, request, jsonify
 from pymongo import MongoClient
@@ -57,9 +57,7 @@ def is_valid_program(program_data):
 # API Routes
 @app.route('/thermostat', methods=['POST'])
 def register_thermostat():
-    """
-    Create new thermostat record w/ default program.
-    """
+    # Create new thermostat record w/ default program.
     try:
         initial_data = request.get_json() if request.data else {}
         
@@ -76,13 +74,39 @@ def register_thermostat():
         app.logger.error(f"Error in register_thermostat: {e}")
         return jsonify(error="Internal server error"), 500
 
+@app.route('/thermostat/<thermostat_id>', methods=['GET', 'DELETE'])
+def handle_thermostat(thermostat_id):
+    # GET: Fetches the entire record for a thermostat.
+    # DELETE: Deletes a thermostat record.
+    try:
+        obj_id = ObjectId(thermostat_id)
+        
+        if request.method == 'GET':
+            device = thermostats.find_one({'_id': obj_id})
+            if device:
+                device['_id'] = str(device['_id'])
+                return jsonify(device)
+            else:
+                return jsonify(error="Thermostat not found"), 404
+
+        elif request.method == 'DELETE':
+            result = thermostats.delete_one({'_id': obj_id})
+            if result.deleted_count == 1:
+                app.logger.info(f"Deleted thermostat with ID: {thermostat_id}")
+                return jsonify(message="Thermostat deleted successfully")
+            else:
+                return jsonify(error="Thermostat not found"), 404
+
+    except InvalidId:
+        return jsonify(error="Invalid thermostat ID format"), 400
+    except Exception as e:
+        app.logger.error(f"Error in handle_thermostat: {e}")
+        return jsonify(error="Internal server error"), 500
 
 @app.route('/thermostat/<thermostat_id>/program', methods=['GET', 'PUT'])
 def handle_program(thermostat_id):
-    """
-    GET:  Fetch current program schedule for a thermostat.
-    PUT:  Update program schedule with new settings.
-    """
+   # GET:  Fetch current program schedule for a thermostat.
+   # PUT:  Update program schedule with new settings.
     try:
         obj_id = ObjectId(thermostat_id)
         device = thermostats.find_one({'_id': obj_id})
@@ -119,9 +143,7 @@ def handle_program(thermostat_id):
 
 @app.route('/thermostat/<thermostat_id>/status', methods=['POST'])
 def update_status(thermostat_id):
-    """
-    Receive status update from thermostat (current temp and heater state).
-    """
+    # Receive status update from thermostat (current temp and heater state).
     try:
         obj_id = ObjectId(thermostat_id)
         status_data = request.get_json()
@@ -147,4 +169,4 @@ def update_status(thermostat_id):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=False)
+    app.run(host='0.0.0.0', port=8080, debug=False)
