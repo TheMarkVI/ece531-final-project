@@ -3,7 +3,7 @@ CC=gcc
 CCFLAGS=-W
 INCLUDES=
 LFLAGS=-L/usr/lib/x86_64-linux-gnu
-LIBS=
+LIBS= -lcurl -lpthread
 
 SRC=thermo.c
 # OBJ=$(SRC:.c=.o)
