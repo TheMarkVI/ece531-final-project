@@ -1,0 +1,3 @@
+[submodule "thermocouple"]
+	path = thermocouple
+	url = https://github.com/cclamb/thermocouple.git
