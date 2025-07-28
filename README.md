@@ -4,8 +4,8 @@ Artip Nakchinda
 ## Usage
 ### Thermostat Server
 The web service is running on an AWS EC2 instance. Access the service with the following URLs: (this service will run for a limited time).
-- `http://3.22.227.202:8080/`
-- `http://ec2-3-22-227-202.us-east-2.compute.amazonaws.com:8080/`
+- `http://3.22.227.202:5031/`
+- `http://ec2-3-22-227-202.us-east-2.compute.amazonaws.com:5031/`
 
 ### Thermostat Client
 To run the thermostat client, you need to compile the C program and run it on a QEMU host. The client reads temperature data from a file and controls the heater based on a programmable schedule.
