@@ -1,0 +1,25 @@
+# CC=arm-linux-gnueabi-gcc
+CC=gcc
+CCFLAGS=-W
+INCLUDES=
+LFLAGS=-L/usr/lib/x86_64-linux-gnu
+LIBS= -lcurl -lpthread
+
+SRC=thermofinal.c
+# OBJ=$(SRC:.c=.o)
+OBJ=$(SRC)
+MAIN=thermoclient
+
+RM=rm -rf
+
+.c.o:
+	$(CC) $(CCFLAGS) $(INCLUDES) -c $< -o $@
+
+$(MAIN): $(OBJ)
+	$(CC) $(CCFLAGS) $(INCLUDES) -o $(MAIN) $(OBJ) $(LFLAGS) $(LIBS)
+
+all: $(MAIN)
+
+clean:
+	$(RM) $(MAIN) *.o *~
+
